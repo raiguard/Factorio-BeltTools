@@ -1,0 +1,11 @@
+{
+    "name": "BeltTools",
+    "version": "1.0.0",
+    "title": "Belt Tools",
+    "author": "raiguard",
+    "contact": "https://reddit.com/r/Raiguard",
+    "homepage": "https://github.com/raiguard/Tapeline",
+    "factorio_version": "0.18",
+    "dependencies": ["base >= 0.18.0"],
+    "description": "Tools for planning, troubleshooting, and building belt layouts."
+}
