@@ -26,12 +26,14 @@ end
 -- EVENT HANDLERS
 
 event.on_init(function()
-  global = {
-    belt_brush = {},
-    conditional_event_registry = {},
-    players = {},
-    settings = {
-      capsule_end_wait = 3
+  global = util.merge{
+    global,
+    {
+      belt_brush = {},
+      players = {},
+      settings = {
+        capsule_end_wait = 3
+      }
     }
   }
   for i,p in pairs(game.players) do
@@ -41,6 +43,10 @@ end)
 
 event.on_player_created(function(e)
   setup_player(game.get_player(e.player_index))
+end)
+
+event.on_player_removed(function(e)
+  global.players[e.player_index] = nil
 end)
 
 -- DEBUGGING
