@@ -5,6 +5,11 @@
 local event = require('lualib.event')
 local util = require('lualib.util')
 
+-- locals
+local draw_circle = rendering.draw_circle
+local draw_line = rendering.draw_line
+local draw_sprite = rendering.draw_sprite
+
 local finish_drag_event = event.generate_id('belt_brush_finish_drag')
 
 local function belt_brush_tick(e)
@@ -24,8 +29,8 @@ end
 -- draw thin 3x3 tilegrid to aid with positioning
 local function draw_grid(player, target)
   local objects = {}
-  local function draw_line(from, to)
-    objects[#objects+1] = rendering.draw_line{
+  local function create_line(from, to)
+    objects[#objects+1] = draw_line{
       color = {},
       width = 1,
       from = from,
@@ -36,11 +41,11 @@ local function draw_grid(player, target)
   end
   -- vertical
   for i=-0.5,0.5 do
-    draw_line({x=target.x+i, y=target.y-1.5}, {x=target.x+i, y=target.y+1.5})
+    create_line({x=target.x+i, y=target.y-1.5}, {x=target.x+i, y=target.y+1.5})
   end
   -- horizontal
   for i=-0.5,0.5 do
-    draw_line({x=target.x-1.5, y=target.y+i}, {x=target.x+1.5, y=target.y+i})
+    create_line({x=target.x-1.5, y=target.y+i}, {x=target.x+1.5, y=target.y+i})
   end
   return objects
 end
@@ -58,6 +63,15 @@ event.on_player_used_capsule(function(e)
       data.grid = draw_grid(player, tile)
       event.on_tick(belt_brush_tick, {name='belt_brush_tick', player_index=e.player_index})
       global_data[e.player_index] = game.tick
+      -- DEBUG: draw circle
+      rendering.draw_circle{
+        color = {r=1,g=1,b=1,a=0.5},
+        radius = 0.1,
+        filled = true,
+        target = tile,
+        surface = player.surface,
+        players = {e.player_index}
+      }
     else -- currently dragging
       -- update on_tick data
       global_data[e.player_index] = game.tick
@@ -68,24 +82,28 @@ event.on_player_used_capsule(function(e)
           rendering.destroy(grid[i])
         end
         data.grid = draw_grid(player, tile)
+        -- DEBUG: draw circle
+        rendering.draw_circle{
+          color = {r=1,g=1,b=1,a=0.5},
+          radius = 0.1,
+          filled = true,
+          target = tile,
+          surface = player.surface,
+          players = {e.player_index}
+        }
         -- check current tile for entities
         local entities = player.surface.find_entities(util.position.to_tile_area(e.position))
         if #entities > 0 then
-          queue[#queue+1] = tile
-        else
-          -- place ghosts for queue
-          for i=1,#queue do
-            rendering.draw_circle{
-              color = {r=1,g=1,b=1,a=0.5},
-              radius = 0.1,
-              filled = true,
-              target = queue[i],
-              surface = player.surface,
-              players = {e.player_index}
-            }
+          -- check if any entities will collide with the belt
+          for i=1,#entities do
+            local entity = entities[i]
+            local collision_mask = entity.prototype.collision_mask
+            for i1=1,#collision_mask do
+              if collision_mask[i1] == 'object-layer' then
+                -- check if it's a 
+              end
+            end
           end
-          -- reset queue
-          data.queue = {tile}
         end
       end
     end

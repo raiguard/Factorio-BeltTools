@@ -1,0 +1,24 @@
+BEHAVIORS
+
+Start dragging:
+- Make sure it's on an empty space
+- Show starting dot
+
+Drag onto an available space:
+- If the queue is only one long:
+  - Set previous space's belt ghost to face this position
+  - Move dot to this position
+- If the queue is multiple long:
+  - Check length of queue, and check to see if the current underneathy can reach that far
+  - If it can, place the ending underneathy and clear the queue
+  - If it can't, check all available underneathies to see if any can reach
+    - If one can, place that at the end and update the one at the beginning
+    - If none can, it's invalid
+
+Drag onto an entity:
+- If the queue is only one long:
+  - Place an underneathy at the beginning
+  - Add current tile to the queue
+- If it's multiple long:
+  - Check the queue. If the direction has changed, it's invalid
+  - Add the current tile to the queue

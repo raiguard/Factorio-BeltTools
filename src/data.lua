@@ -77,5 +77,5 @@ end
 
 data:extend{
   -- brush dummy
-  capsule('bt-belt-brush', '__base__/graphics/icons/fast-transport-belt.png', 2)
+  capsule('bt-belt-brush', '__base__/graphics/icons/fast-transport-belt.png', 1)
 }
