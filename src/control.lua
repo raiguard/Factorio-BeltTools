@@ -18,7 +18,10 @@ require('scripts.belt-brush')
 
 local function setup_player(player)
   global.players[player.index] = {
-    belt_brush = {}
+    belt_brush = {
+      objects = {},
+      queue={}
+    }
   }
 end
 
