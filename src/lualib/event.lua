@@ -1,17 +1,16 @@
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------
--- RAILUALIB EVENT LIBRARY
--- v1.0.0
+-- RAILUALIB EVENT MODULE
 
--- DOCUMENTATION: https://github.com/raiguard/SmallFactorioMods/wiki/Event-Library-Documentation
+-- DOCUMENTATION: https://github.com/raiguard/SmallFactorioMods/wiki/Event-Module-Documentation
 
--- library
+-- module
 local event = {}
 -- holds registered events
 local event_registry = {}
 -- GUI filter matching functions
 local gui_filter_matchers = {
   string = function(element, filter) return element.name:match(filter) end,
-  number = function(element, filter) return element.id == filter end,
+  number = function(element, filter) return element.index == filter end,
   table = function(element, filter) return element == filter end
 }
 -- calls handler functions tied to an event
@@ -42,7 +41,7 @@ local function dispatch_event(e)
     end
     -- insert registered players if necessary
     if options.name then
-      e.registered_players = con_registry[t.name] and con_registry[t.name].players
+      e.registered_players = con_registry[options.name] and con_registry[options.name].players
     end
     -- check GUI filters if they exist
     local filters = options.gui_filters
@@ -92,14 +91,14 @@ local bootstrap_handlers = {
 
 -- registers a handler to run when the event is called
 function event.register(id, handler, options)
-  -- we must do this here since this can get called before on_init
-  if not global.__lualib then global.__lualib = {} end
+  -- we must do this here as well since this can get called before on_init
+  if not global.__lualib then global.__lualib = {event={}} end
   options = options or {}
   -- nest GUI filters into an array if they're not already
   local filters = options.gui_filters
   if filters then
     if type(filters) ~= 'table' or filters.gui then
-      filters = {filters}
+      options.gui_filters = {filters}
     end
   end
   -- add to conditional event registry if needed
@@ -107,8 +106,9 @@ function event.register(id, handler, options)
   if name then
     local player_index = options.player_index
     local con_registry = global.__lualib.event[name]
+    options.player_index = nil
     if not con_registry then
-      global.__lualib.event[name] = {id=id, players={player_index}, gui_filters=filters}
+      global.__lualib.event[name] = {id=id, players={player_index}, options=options}
     elseif player_index then
       -- check to be sure this player isn't already registered
       local players = con_registry.players
@@ -264,8 +264,9 @@ end
 
 -- create global table for conditional events on init
 event.on_init(function()
-  if not global.__lualib then global.__lualib = {} end
-  global.__lualib.event = {}
+  if not global.__lualib then global.__lualib = {event={}}
+  else global.__lualib.event = {}
+  end
 end)
 
 -- re-registers conditional handlers if they're in the registry
