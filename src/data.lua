@@ -9,13 +9,13 @@ if mods['debugadapter'] then
   }
 end
 
-local empty_sound = {filename='__BeltTools__/data/sound/empty.ogg'}
+local empty_sound = {filename='__RaiBeltTools__/sound/empty.ogg'}
 local function capsule(name, icon, cooldown)
   return {
     type = 'capsule',
     name = name,
     icons = {
-      {icon='__BeltTools__/data/graphics/black.png', icon_size=1, scale=64},
+      {icon='__RaiBeltTools__/graphics/black.png', icon_size=1, scale=64},
       {icon=icon, icon_size=32, mipmap_count=2}
     },
     subgroup = 'capsule',
@@ -73,9 +73,23 @@ end
 --   }
 -- end
 
--- BELT BRUSH
-
 data:extend{
-  -- brush dummy
-  capsule('bt-belt-brush', '__base__/graphics/icons/fast-transport-belt.png', 1)
+  capsule('rbt-belt-brush', '__base__/graphics/icons/fast-transport-belt.png', 1),
+  capsule('rbt-route-visualisation', '__base__/graphics/icons/express-transport-belt.png', 10)
 }
+
+-- ROUTE VISUALISATION SPRITES
+-- forward, left, right, down
+
+for i,s in ipairs{'', 'F', 'R', 'FR', 'B', 'FB', 'RB', 'FRB', 'L', 'FL', 'RL', 'FRL', 'BL', 'FBL', 'RBL', 'FRBL'} do
+  data:extend{
+    {
+      type = 'sprite',
+      name = 'rbt_route_belt_'..s,
+      filename = '__RaiBeltTools__/graphics/visualisation/belts.png',
+      x = (32*(i-1)),
+      size = 32,
+      flags = {'terrain'}
+    }
+  }
+end

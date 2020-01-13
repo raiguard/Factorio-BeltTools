@@ -2,13 +2,14 @@
 -- BELT TOOLS CONTROL SCRIPTING
 
 -- debug adapter
-pcall(require,'__debugadapter__/debugadapter.lua')
+pcall(require,'__debugadapter__.debugadapter')
 
 -- dependencies
 local event = require('lualib.event')
 
 -- modules
 require('scripts.belt-brush')
+require('scripts.route-visualisation')
 
 -- locals
 

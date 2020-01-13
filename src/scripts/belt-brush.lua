@@ -98,7 +98,7 @@ end
 
 event.on_player_used_capsule(function(e)
   local item = e.item
-  if item and item.valid and item.name == 'bt-belt-brush' then
+  if item and item.valid and item.name == 'rbt-belt-brush' then
     local player = game.get_player(e.player_index)
     local is_editor = player.controller_type == defines.controllers.editor
     local global_data = global.belt_brush
