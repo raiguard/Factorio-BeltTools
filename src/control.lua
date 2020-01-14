@@ -34,6 +34,7 @@ event.on_init(function()
     global,
     {
       belt_brush = {},
+      belt_iterator = {},
       players = {},
       settings = {
         capsule_end_wait = 3

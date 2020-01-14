@@ -81,11 +81,12 @@ data:extend{
 -- ROUTE VISUALISATION SPRITES
 -- forward, left, right, down
 
-for i,s in ipairs{'', 'F', 'R', 'FR', 'B', 'FB', 'RB', 'FRB', 'L', 'FL', 'RL', 'FRL', 'BL', 'FBL', 'RBL', 'FRBL'} do
+-- for i,s in ipairs{'', 'F', 'R', 'FR', 'B', 'FB', 'RB', 'FRB', 'L', 'FL', 'RL', 'FRL', 'BL', 'FBL', 'RBL', 'FRBL'} do
+for i=1,16 do
   data:extend{
     {
       type = 'sprite',
-      name = 'rbt_route_belt_'..s,
+      name = 'rbt_route_belt_'..i,
       filename = '__RaiBeltTools__/graphics/visualisation/belts.png',
       x = (32*(i-1)),
       size = 32,
