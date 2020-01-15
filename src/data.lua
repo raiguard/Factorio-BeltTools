@@ -81,7 +81,6 @@ data:extend{
 -- ROUTE VISUALISATION SPRITES
 -- forward, left, right, down
 
--- for i,s in ipairs{'', 'F', 'R', 'FR', 'B', 'FB', 'RB', 'FRB', 'L', 'FL', 'RL', 'FRL', 'BL', 'FBL', 'RBL', 'FRBL'} do
 for i=1,16 do
   data:extend{
     {
@@ -89,8 +88,29 @@ for i=1,16 do
       name = 'rbt_route_belt_'..i,
       filename = '__RaiBeltTools__/graphics/visualisation/belts.png',
       x = (32*(i-1)),
-      size = 32,
-      flags = {'terrain'}
+      size = 32
     }
   }
+end
+
+do
+  local size = {x=64, y=32}
+  local width = {x=256, y=128}
+  local i = 1
+  for y = 0, width.y - size.y, size.y do
+    for x = 0, width.x - size.x, size.x do
+      data:extend{
+        {
+          type = 'sprite',
+          name = 'rbt_route_splitter_'..i,
+          width = size.x,
+          height = size.y,
+          x = x,
+          y = y,
+          filename = '__RaiBeltTools__/graphics/visualisation/splitters.png'
+        }
+      }
+      i = i + 1
+    end
+  end
 end
